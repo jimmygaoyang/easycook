@@ -4,7 +4,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=TRADITIONAL;
 
 DROP SCHEMA IF EXISTS CookMaster ;
 CREATE SCHEMA IF NOT EXISTS CookMaster DEFAULT CHARACTER SET utf8 ;
-USE CookMaster ;
+USE CookMaster;
 
 drop table if exists Brand;
 
@@ -32,7 +32,7 @@ create table Brand
    CorporName           varchar(100),
    TelNum               varchar(20),
    Address              varchar(200),
-   URL                  varchar(50); 
+   URL                  varchar(50),
    Ref                  INT,
    primary key (Brand_Id),
    UNIQUE INDEX Brand_Name_UNIQUE (Name ASC)
