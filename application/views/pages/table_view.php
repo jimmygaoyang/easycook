@@ -1,47 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title><?php echo $title?>ECOOK</title>
 	<meta charset = "UTF-8"></meta>
-	<title><?php echo $title?></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="/htdocs/bootstrap/css/bootstrap.min.css">
 	<script type="text/javascript" src="/htdocs/js/jquery-2.1.3.min.js"></script>
-	<script src="/htdocs/bootstrap/js/bootstrap.min.js"></script>	
+	<script src="/htdocs/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-		<div class="container table-responsive">
+	<div class="container table-responsive">
 		<h2>表格1</h2>
 		<p> .table 为任意表格添加基本样式 (只有横向分隔线):</p>            
-		<table class="table  table-hover table-condensed">
+		<table class="table table-striped table-bordered table-hover table-condensed">
 			<thead>
 			  <tr>
-			    <th>ID</th>
-			    <th>品牌</th>
-			    <th>公司名称</th>
-			    <th>电话</th>
-			    <th>地址</th>
-			    <th>网址</th>
-			    <th>引用次数</th>
+			    <th>#</th>
+			    <th>Firstname</th>
 			  </tr>
 			</thead>
 			<tbody>
-			 <?php if(count($brands) == 0): ?>
-		         <tr>
-		           <td colspan='12'>没有记录</td>
-		         </tr>
-		     <?php else: ?>     
-		     <?php foreach($brands as $brand): ?>
-		         <tr>
-		          <td><?= $brand['Brand_Id'] ?></td>
-		          <td><?= $brand['Name'] ?></td>
-		          <td><?= $brand['CorporName'] ?> </td>
-		          <td><?= $brand['TelNum'] ?></td>
-		          <td><?= $brand['Address'] ?></td>
-		          <td><?= $brand['URL'] ?></td>
-		          <td><?= $brand['Ref'] ?></td>
-		         </tr>
-		    <?php endforeach ?>
-		    <?php endif ?>
+			  <tr>
+			    <td>1</td>
+			    <td>Anna</td>
+			  </tr>
+			  <tr>
+			    <td>2</td>
+			    <td>Debbie</td>
+			  </tr>
+			  <tr>
+			    <td>3</td>
+			    <td>John</td>
+			  </tr>
 			</tbody>
 		</table>
 		<h2>表格2</h2>
@@ -76,5 +66,10 @@
 				</tbody>
 			</table>
 		</div>
+	<script type="text/javascript">
+	$(function(){
+		// $("tr:even").css("background-color","yellow");
+	});
+	</script>
 </body>
 </html>

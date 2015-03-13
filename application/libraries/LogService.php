@@ -35,7 +35,7 @@ class LogService
    * Path of the logs directory
    * @var string 
    */
-  protected $log_path = "/home/gy/CodeIgniter-2.2-stable/easycook/Logs";
+  protected $log_path = "/home/gy/CodeIgniter-2.2-stable/easycook/Logs/";
 
   /**
    * Name of the log file
