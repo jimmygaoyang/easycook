@@ -181,3 +181,33 @@ create table User
 )ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
+/*==============================================================*/
+/* Table: box                                                 */
+/*==============================================================*/
+create table Box
+(
+   Box_Id              int NOT NULL AUTO_INCREMENT,
+   Box_Mac             int not null,
+   User_Id             int,
+   Material_Kind_Id    int,
+   Material_Id         int,
+   SW_Ver              int,
+   primary key (Box_Id),
+  CONSTRAINT Box_User_Id
+    FOREIGN KEY (User_Id)
+    REFERENCES User (User_Id )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT Box_Material_Kind_Id
+    FOREIGN KEY (Material_Kind_Id)
+    REFERENCES Material_Kind (Material_Kind_Id )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,   
+  CONSTRAINT Box_Material_Id
+    FOREIGN KEY (Material_Id)
+    REFERENCES Material (Material_Id )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE   
+)ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
