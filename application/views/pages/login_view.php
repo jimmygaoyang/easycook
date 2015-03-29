@@ -10,7 +10,7 @@
 <body>
 <div class="container-fluid">
 	<div class="row" style="border-bottom:1px solid #000">
-		<div class="col-md-2 col-sm-2 clearfix">
+		<div class="col-md-2 col-sm-2">
 		<p style = "font-size:28px;"><b>COOKMASTER</b></p>
 		</div>
 		<div class="col-md-2   col-sm-2 " >
@@ -82,7 +82,14 @@
 		</div>
 	</div>
 </div>
-
+<div class="row" style="margin-top:100px;border-top:1px solid #000">
+		<div class="col-md-2 col-sm-2">
+			<p style = "font-size:20px;"><b>@2015 EesyCook,Inc</b></p>
+		</div>
+		<div class="col-md-2 col-sm-2 col-md-offset-8 col-sm-offset-8">
+			<p style = "font-size:20px;"><b>Contact</b></p>
+		</div>
+	</div>
 
 </body>
 </html>
