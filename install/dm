@@ -1,0 +1,58 @@
+#!/bin/sh
+# INIT script for starting device_manager_server
+DAEMON=/usr/bin/php
+ARGS="/home/gy/CodeIgniter-2.2-stable/easycook/start_scripts/device_manager_start.php"
+PIDFILE=/var/run/dm.pid
+CHILD_PIDFILE=/var/run/dm_child.pid
+
+pidof_proc() {
+if [ -e "$CHILD_PIDFILE" ]; then
+	PID=$(cat $CHILD_PIDFILE)
+	if ps -p $PID > /dev/null;
+	then
+	echo -n "$PID"
+		return 0
+	fi
+fi
+return 1
+}
+
+
+case "$1" in
+  start)
+        echo -n "Starting device_Manager_server: "
+        start-stop-daemon --start -b -m -p $PIDFILE --exec $DAEMON -- $ARGS
+        echo "done"
+        ;;
+  stop)
+        echo -n "Stopping device_manager_server "
+        start-stop-daemon --stop -p $PIDFILE
+        rm $PIDFILE
+        echo "done"
+        ;;
+  restart)
+        $0 stop
+        $0 start
+        ;;
+  status)
+	  PID=$(pidof_proc) || true
+  	if [ -n "$PID" ]; then
+	  	echo "Device Manager Server is running (pid $PID)."
+	  	exit 0
+	  else
+	  	echo "Device Manager Server is NOT running."
+	  	if [ -e "$PIDFILE" ]; then
+	  		exit 1
+	  	else
+	  		exit 3
+	  	fi
+	  fi
+	  ;;
+  *)
+        echo "Usage dm { start | stop | restart}" >&2
+        exit 1
+        ;;
+esac
+
+exit 0
+
