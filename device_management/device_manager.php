@@ -91,7 +91,7 @@ class device_manager
      */
     public function __construct() 
     {
-        $this->db = new Database("CookMaster", "root", "jinsui");
+        $this->db = new Database("CookMaster", "root", "jinsui"); 
         //$this->load->library("LogService");
         $this->config = parse_ini_file("doms_config.ini");
         $this->clients = array();
@@ -328,20 +328,20 @@ class device_manager
                 */
                 if($client == $this->udp)
                 {
-                  if($input === "wakeup")
-                  {
-                    $this->db->logservice->log($this->module_name, "DEBUG","EVENT", $this->IP,"Got UDP trigger : $input");
-                    $this->send_connected_device_messages();
-                  }
-                  else if($input === "cleanup")
-                  {
-                    $this->db->logservice->log($this->module_name, "DEBUG","EVENT", $this->IP, "Got cleanup trigger : $input");
-                    $this->cleanup_zombie_devices();
-                  }
-                  else
-                  {
-                    $this->db->logservice->log($this->module_name, "ERROR", "ALARM",$this->IP, "Wrong UDP Message : $input");
-                  }
+                  // if($input === "wakeup")
+                  // {
+                  //   $this->db->logservice->log($this->module_name, "DEBUG","EVENT", $this->IP,"Got UDP trigger : $input");
+                  //   $this->send_connected_device_messages();
+                  // }
+                  // else if($input === "cleanup")
+                  // {
+                  //   $this->db->logservice->log($this->module_name, "DEBUG","EVENT", $this->IP, "Got cleanup trigger : $input");
+                  //   $this->cleanup_zombie_devices();
+                  // }
+                  // else
+                  // {
+                  //   $this->db->logservice->log($this->module_name, "ERROR", "ALARM",$this->IP, "Wrong UDP Message : $input");
+                  // }
                 }
                 else
                 {
@@ -2124,34 +2124,34 @@ class device_manager
     public function cleanup_zombie_devices()
     {
       global $DEVICE_DEREG_MSG;
-      $result = $this->db->query("select Device_Id from Device_Specification where Sleep_Time <= now() and Device_Status = 'active'");
-      if($result === false)
-      {
-        echo "false\n";
-      }
-      while ($this->db->SingleRecord($result))
-      {
-        $device_id = $this->db->Record['Device_Id'];
-        echo "Device ID for cleanup is $device_id\n";
-        $client = $this->get_device_socket($device_id);
-        $this->db->logservice->log($this->module_name, "DEBUG", "GENERAL",$this->IP, "Identified a zombie device. Deregistering: $device_id");
+      // $result = $this->db->query("select Device_Id from Device_Specification where Sleep_Time <= now() and Device_Status = 'active'");
+      // if($result === false)
+      // {
+      //   echo "false\n";
+      // }
+      // while ($this->db->SingleRecord($result))
+      // {
+        // $device_id = $this->db->Record['Device_Id'];
+        // echo "Device ID for cleanup is $device_id\n";
+        // $client = $this->get_device_socket($device_id);
+        // $this->db->logservice->log($this->module_name, "DEBUG", "GENERAL",$this->IP, "Identified a zombie device. Deregistering: $device_id");
         
-        $this->device_deregistration("$DEVICE_DEREG_MSG $device_id \r\n", FALSE, 'sleep');
+        // $this->device_deregistration("$DEVICE_DEREG_MSG $device_id \r\n", FALSE, 'sleep');
 
-        $date = gmdate('Y-m-d H:i:s');
-        $date_format = array();
-        $date = explode(" ", $date);
-        $date_format['date'] = $date[0];
-        $date_format['Timestamp'] = 'T';
-        $date_format['time'] = $date[1];
-        $date_format['Zone'] = 'Z';
-        $date = implode("",$date_format);
+        // $date = gmdate('Y-m-d H:i:s');
+        // $date_format = array();
+        // $date = explode(" ", $date);
+        // $date_format['date'] = $date[0];
+        // $date_format['Timestamp'] = 'T';
+        // $date_format['time'] = $date[1];
+        // $date_format['Zone'] = 'Z';
+        // $date = implode("",$date_format);
         
-        $test_data = "EVENT $device_id $date RESOLVED SERV DEVSTAT Device in sleep state"; 
+        // $test_data = "EVENT $device_id $date RESOLVED SERV DEVSTAT Device in sleep state"; 
   //      $this->fm->handle_serverevents($test_data,0);
         
-        $this->disconnect_device($client);
-      }
+        // $this->disconnect_device($client);
+      // }
     }
 
     /** FUNCTION: events
