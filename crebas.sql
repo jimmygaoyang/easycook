@@ -22,6 +22,8 @@ drop table if exists Step;
 
 drop table if exists User;
 
+DROP TABLE IF EXISTS Device_Specification;
+
 /*==============================================================*/
 /* Table: Brand                                                 */
 /*==============================================================*/
@@ -210,4 +212,43 @@ create table Box
     ON UPDATE CASCADE   
 )ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+-- -----------------------------------------------------
+-- Table `Device_Specification`
+-- -----------------------------------------------------
+
+
+CREATE  TABLE IF NOT EXISTS Device_Specification(
+  Device_Id INT(11) NOT NULL AUTO_INCREMENT ,
+  Device_IP VARCHAR(15) NOT NULL ,
+  Device_CUID VARCHAR(32) NOT NULL ,
+  Device_Name VARCHAR(45) NOT NULL ,
+  Device_Serial_No VARCHAR(32) NOT NULL ,
+  User_Id INT NOT NULL ,
+  SMS_No VARCHAR(32) NOT NULL ,
+  Device_Status ENUM('active','inactive','sleep','dormant') NOT NULL DEFAULT 'inactive' ,
+  Wakeup_Attempts INT(2) NOT NULL DEFAULT 0 ,
+  Registration_Count INT(7) NULL ,
+  Sleep_Time DATETIME NULL ,
+  Last_Contact_Time DATETIME NULL ,
+  Heartbeat_interval INT NOT NULL DEFAULT 0 ,
+  Keep_Alive_Period INT(8) NULL ,
+  Alarm ENUM('0','1') NULL ,
+  Last_Modified DATETIME NOT NULL ,
+  Description VARCHAR(32) NULL ,
+  PRIMARY KEY (Device_Id) ,
+  UNIQUE INDEX Hub_MAC_UNIQUE (Device_CUID ASC) ,
+  UNIQUE INDEX Hub_Id_UNIQUE (Device_Id ASC) ,
+
+  CONSTRAINT Device_Specification_User_Id
+    FOREIGN KEY (User_Id)
+    REFERENCES User (User_Id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+
 
