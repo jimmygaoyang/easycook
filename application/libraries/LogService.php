@@ -141,7 +141,7 @@ class LogService
      $flag = 0;
      $colors = new Colors();
      $debug = debug_backtrace();
-     $log[] = "[".gmdate('Y-m-d H:i:s')."]";
+     $log[] = "[".date('Y-m-d H:i:s')."]";
      $log[] = $host;
      $log[] = $level;
      $log[] = $id;

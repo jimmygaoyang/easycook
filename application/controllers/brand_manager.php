@@ -6,15 +6,19 @@ class Brand_manager extends CI_Controller {
 	   * Constructor
 	   * 
 	   */
-	  // function __construct() {
-	  //   //parent::__construct();
-	  //   $this->data['title'] = "品牌表";
-	  //   //$this->load->model("brand");
-	  // }
+	  function __construct() {
+	    parent::__construct();
+	    $this->module_name = "Brand_manager";
+	    $host= gethostname();
+		$this->IP = gethostbyname($host);
+	    //$this->load->model("brand");
+	  }
 
 	public function index()
 	{
 		$this->load->model("brand");
+		$this->load->library("LogService");
+
 		$criteria = array();
 	    $options = array();
 	    $options['sort'] = array("convert(Name using gb2312)" => "desc");
@@ -47,6 +51,7 @@ class Brand_manager extends CI_Controller {
 		}
 		else
 		{
+
 			$data_in = array();
 			$data_in["Name"] = $this->input->post("BrandName");
 			$data_in["CorporName"] = $this->input->post("CorporName");
