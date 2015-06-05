@@ -20,7 +20,9 @@ class Api extends CI_Controller{
 		
 
 		$data = file_get_contents('php://input');
+		$busData = json_decode($data);
 		$this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,"Receive data $data ");
-		echo $data;
+		$rspData = array("id"=>3,"name"=>"jimmy");
+		echo json_encode($rspData);
 	}
 }
