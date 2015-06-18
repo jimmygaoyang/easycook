@@ -1,0 +1,20 @@
+{
+  "ad_menu": [
+    {
+      "RecipeId": 832347,
+      "Cover": "http://recipe1.hoto.cn/pic/recipe/l/5b/b3/832347_53f806.jpg",
+      "CoverTitle": "家常炒蛋",
+      "UserName": "心莲儿",
+      "UserId": 1992177,
+      "FavoriteCount": 3
+    },
+    {
+      "RecipeId": 369508,
+      "Cover": "http://recipe0.hoto.cn/pic/recipe/l/64/a3/369508_6b553c.jpg",
+      "CoverTitle": "水煮羊肉",
+      "UserName": "天山可可",
+      "UserId": 642281,
+      "FavoriteCount": 122
+    }
+  ]
+}
