@@ -189,11 +189,11 @@ DEFAULT CHARACTER SET = utf8;
 create table Box
 (
    Box_Id              int NOT NULL AUTO_INCREMENT,
-   Box_Mac             int not null,
+   Box_Mac             VARCHAR(20) not null,
    User_Id             int,
    Material_Kind_Id    int,
    Material_Id         int,
-   SW_Ver              int,
+   SW_Ver              VARCHAR(15),
    primary key (Box_Id),
   CONSTRAINT Box_User_Id
     FOREIGN KEY (User_Id)
