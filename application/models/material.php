@@ -7,7 +7,7 @@ class Material extends MY_Model
 		parent::__construct();
 		$this->table_name = "Material";
 		$this->fields = $this->db->list_fields($this->table_name);
-		$this->primary_key = "Material";
+		$this->primary_key = "Material_Id";
 	}
 
 	
