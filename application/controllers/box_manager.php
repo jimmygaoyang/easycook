@@ -175,4 +175,72 @@ class Box_manager extends CI_Controller{
    }
 
 
+
+   /**
+   * FUNCTION: get_list()
+   * 
+   * get_list
+   * 
+   * @param  none
+   * @return none
+   */
+   function get_list()
+   {
+      $data = file_get_contents('php://input');
+      $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,"$data ");
+      $busData = json_decode($data ,true);
+
+      $criteria = array();
+      $criteria["and"] = array("User_Id" => $busData["user_id"]);
+      $box_result= $this->Box->read($criteria);
+
+      $rspBox = array();
+      if (!empty($box_result)) {
+        # code...
+        $s = var_export($box_result,true);
+        $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,$s);
+        
+        foreach ($box_result as $box ) {
+          # code...
+          $BoxBean["box_id"]=$box["Box_Id"];
+          $BoxBean["box_mac"]=$box["Box_Mac"];
+          $BoxBean["material_kind_id"]=$box["Material_Kind_Id"];
+          //读取kind中的种类id
+          $criteria = array();
+          $criteria["and"] = array("Material_Kind_Id" => $box["Material_Kind_Id"]);
+          $KindDat = $this->Material_kind->read($criteria);
+          $BoxBean["material_kind_name"]=$KindDat[0]["Name"];
+
+          $BoxBean["material_id"]=$box["Material_Id"];
+          //读取flavor中的id
+          $criteria = array();
+          $criteria["and"] = array("Material_Id" => $box["Material_Id"]);
+          $flavorDat = $this->Material->read($criteria);
+          $BoxBean["material_name"]=$flavorDat[0]["Name"];
+
+          $BoxBean["brand_id"]=$flavorDat[0]["Brand_Id"];
+          //读取Brand中的品牌
+          $criteria = array();
+          $criteria["and"] = array("Brand_Id" => $BoxBean["brand_id"]);
+          $brandDat = $this->brand->read($criteria);
+          $BoxBean["brand_name"]=$brandDat[0]["Name"];
+          $BoxBean["sw_ver"]=$box["SW_Ver"];
+
+        $rspBox[] = $BoxBean;
+        }
+        $s = var_export($rspBox,true);
+        $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,$s);
+      }
+
+        $rspData["BoxList"] =$rspBox;
+        $s = var_export($rspData,true);
+        $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,$s);
+
+        $rspInfo = json_encode($rspData);
+        $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,$rspInfo);
+        echo $rspInfo;
+
+   }
+
+
 }
