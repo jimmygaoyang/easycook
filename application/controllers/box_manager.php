@@ -224,6 +224,10 @@ class Box_manager extends CI_Controller{
           $criteria["and"] = array("Brand_Id" => $BoxBean["brand_id"]);
           $brandDat = $this->brand->read($criteria);
           $BoxBean["brand_name"]=$brandDat[0]["Name"];
+          $BoxBean["corpor_name"]=$brandDat[0]["CorporName"];
+          $BoxBean["corpor_tel"]=$brandDat[0]["TelNum"];
+          $BoxBean["corpor_addr"]=$brandDat[0]["Address"];
+          $BoxBean["corpor_url"]=$brandDat[0]["URL"];
           $BoxBean["sw_ver"]=$box["SW_Ver"];
 
         $rspBox[] = $BoxBean;
@@ -240,6 +244,54 @@ class Box_manager extends CI_Controller{
         $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,$rspInfo);
         echo $rspInfo;
 
+   }
+
+
+   function update_box_brand()
+   {
+      $data = file_get_contents('php://input');
+      $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,"$data ");
+      $busData = json_decode($data ,true);
+
+      $criteria = array();
+      $criteria["and"] = array("Name" => $busData["name"]);
+      $brand_result= $this->brand->read($criteria);
+
+      //没找到就添加brand 
+      if (empty($box_result)) {
+              $data_in = array();
+              $data_in["CorporName"] = $busData["corpor_name"];
+              $data_in["Name"] = $busData["name"];
+              $data_in["TelNum"] = $busData["corpor_tel"];
+              $data_in["Address"] = $busData["corpor_addr"];
+              $data_in["URL"] = $busData["corpor_url"];
+              $result = $this->brand->create($data_in);  
+              //读取新添加
+               $criteria = array();
+              $criteria["and"] = array("Name" => $busData["name"]);
+              $brand_result= $this->brand->read($criteria);
+      }
+      //找到就更新brand
+      $data_in = array();
+      $data_in["CorporName"] = $busData["corpor_name"];
+      $data_in["Name"] = $busData["name"];
+      $data_in["TelNum"] = $busData["corpor_tel"];
+      $data_in["Address"] = $busData["corpor_addr"];
+      $data_in["URL"] = $busData["corpor_url"];
+      $criteria["and"] = array("Brand_Id" =>  $brand_result[0]["Brand_Id"]);
+      $brand_id = $this->brand->update($data_in, $criteria);
+
+      //然后更新box
+      $data_in = array();
+      $data_in['Brand_Id'] = $brand_result[0]["Brand_Id"];
+      $criteria["and"] = array("Box_Mac" =>  $busData["box_mac"]);
+      $box_id = $this->Box->update($data_in, $criteria);
+
+      //返回brand信息
+      $busData["brand_id"] = $brand_result[0]["Brand_Id"]; 
+      $rspInfo = json_encode($busData);
+      $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,$rspInfo);
+      echo $rspInfo;
    }
 
 

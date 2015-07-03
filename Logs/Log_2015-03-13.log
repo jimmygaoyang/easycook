@@ -1,2 +1,0 @@
-[2015-03-13 11:55:43] 127.0.1.1 ERROR GENERAL DB MANAGER CLASS:My_Model METHOD:create LINE:230 Data insertion error
-[2015-03-13 11:55:43] 127.0.1.1 ERROR EVENT DB MANAGER CLASS:My_Model METHOD:create LINE:231 Insert Query: INSERT INTO `Brand` (`Name`, `CorporName`, `TelNum`, `Address`, `URL`, `Ref`) VALUES ('FD', '', '', '', '', 0)

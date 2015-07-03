@@ -121,4 +121,45 @@ class Brand_manager extends CI_Controller {
 
 	}
 
+
+		public function find_by_Id()
+	{
+		$data = file_get_contents('php://input');
+   		$this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,"$data ");
+		$busData = json_decode($data ,true);
+
+		$like["Name"] = $busData["brandName"];
+	    $options["sort"] = array("Ref"=>"desc");
+	    $brand_result = $this->brand->read_sort('', '', $options,$like);
+	    $rspBrand = array();
+	    if (!empty($brand_result)) {
+	    	# code...
+	    	$s = var_export($brand_result,true);
+	    	$this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,$s);
+	    	
+	    	foreach ($brand_result as $brand ) {
+	    		# code...
+	    		$BrandBean["brand_id"]=$brand["Brand_Id"];
+	    		$BrandBean["name"]=$brand["Name"];
+	    		$BrandBean["corpor_name"]=$brand["CorporName"];
+	    		$BrandBean["tel_name"]=$brand["TelNum"];
+	    		$BrandBean["address"]=$brand["Address"];
+	    		$BrandBean["url"]=$brand["URL"];
+	    		$BrandBean["ref"]=$brand["Ref"];
+				$rspBrand[] = $BrandBean;
+	    	}
+	    	$s = var_export($rspBrand,true);
+	    	$this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,$s);
+	    }
+
+        $rspData["brandList"] =$rspBrand;
+        $s = var_export($rspData,true);
+        $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,$s);
+
+        $rspInfo = json_encode($rspData);
+        $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,$rspInfo);
+        echo $rspInfo;
+
+	}
+
 }
