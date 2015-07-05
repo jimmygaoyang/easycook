@@ -6,6 +6,8 @@ DROP SCHEMA IF EXISTS CookMaster ;
 CREATE SCHEMA IF NOT EXISTS CookMaster DEFAULT CHARACTER SET utf8 ;
 USE CookMaster;
 
+drop table if exists Box;
+
 drop table if exists Brand;
 
 drop table if exists Material;
@@ -251,4 +253,5 @@ DEFAULT CHARACTER SET = utf8;
 
 
 
-
+insert into Role values(1,'admin','active');
+insert into Role values(2,'user','active');

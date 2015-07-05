@@ -294,5 +294,33 @@ class Box_manager extends CI_Controller{
       echo $rspInfo;
    }
 
+   function update_box_mac()
+   {
+      $data = file_get_contents('php://input');
+      $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,"$data ");
+      $busData = json_decode($data ,true);
+
+      $criteria = array();
+      $criteria["and"] = array("Box_Id" => $busData["box_id"]);
+      $Box_result= $this->Box->read($criteria);
+      $s = var_export($Box_result,true);
+      $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,$s);
+      if (empty($Box_result)) {
+        $rspInfo = json_encode($busData);
+        $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,$rspInfo);
+        echo $rspInfo;
+        return;
+      }
+      // 更新mac
+      $data_in = array();
+      $data_in['Box_Mac'] = $busData["box_mac"];
+      $criteria["and"] = array("Box_Id" =>  $Box_result[0]["Box_Id"]);
+      $box_id = $this->Box->update($data_in, $criteria);
+
+      $rspInfo = json_encode($busData);
+      $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,$rspInfo);
+      echo $rspInfo;
+
+   }
 
 }

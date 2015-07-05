@@ -14,6 +14,7 @@ class Material_manager extends CI_Controller
        parent::__construct();
        $this->load->library("LogService");
        $this->load->model('Material');
+       $this->load->model('Material_kind');
        $this->load->model('brand');
        
        $this->data['title'] = "material_manager";
@@ -42,6 +43,11 @@ class Material_manager extends CI_Controller
 	    		# code...
 	    		$MaterialBean["material_id"]=$material["Material_Id"];
 	    		$MaterialBean["material_kind_id"]=$material["Material_Kind_Id"];
+          //读取Kind中的类目
+          $criteria = array();
+          $criteria["and"] = array("Material_Kind_Id" => $material["Material_Kind_Id"]);
+          $materialDat = $this->Material_kind->read($criteria);
+          $MaterialBean["material_kind_name"]=$materialDat[0]["Name"];
 	    		$MaterialBean["name"]=$material["Name"];
 	    		$MaterialBean["brand_id"]=$material["Brand_Id"];
 	    		$MaterialBean["ref"]=$material["Ref"];
