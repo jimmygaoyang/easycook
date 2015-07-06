@@ -72,4 +72,7 @@ class Material_manager extends CI_Controller
         $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,$rspInfo);
         echo $rspInfo;
     }
+
+
+
 }

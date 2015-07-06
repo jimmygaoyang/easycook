@@ -323,4 +323,88 @@ class Box_manager extends CI_Controller{
 
    }
 
+   function update_box_material()
+   {
+      $data = file_get_contents('php://input');
+      $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,"$data ");
+      $busData = json_decode($data ,true);
+
+      //处理flavor_kind_name
+      if ($busData["material_kind_id"] == -1)//未设置种类
+      {
+          //查找是否有该种类
+            $criteria = array();
+            $criteria["and"] = array("Name" => $busData["material_kind_name"]);
+            $result = $this->Material_kind->count_results($criteria);
+            if ($result <= 0)//没有该种类
+            {
+              //添加该种类
+              $data_in = array();
+              $data_in["Name"] = $busData["material_kind_name"];
+              $result = $this->Material_kind->create($data_in);  
+            }
+
+      }
+      //读取kind中的种类id
+      $criteria = array();
+      $criteria["and"] = array("Name" => $busData["material_kind_name"]);
+      $KindDat = $this->Material_kind->read($criteria);
+
+      if ($busData["material_id"] == -1) {
+        //查找是否有该flavor
+            $criteria = array();
+            $criteria["and"] = array("Name" => $busData["material_name"]);
+            $result = $this->Material->count_results($criteria);
+            if ($result <= 0)//没有该flavor
+            {
+              //添加“未知”品牌
+              //查找是否有“未知”品牌
+              $criteria = array();
+              $criteria["and"] = array("Name" => "未知");
+              $result = $this->brand->count_results($criteria);
+              if ($result <= 0)//没有“未知”品牌
+              {
+                //添加“未知”品牌
+                $data_in = array();
+                $data_in["Name"] = "未知";
+                $result = $this->brand->create($data_in);  
+              }
+              //读取未知品牌ID
+               $criteria = array();
+              $criteria["and"] = array("Name" => "未知");
+              $brandDat = $this->brand->read($criteria);
+
+              //添加该flavor
+               $data_in = array();
+               $data_in["Material_kind_id"] = $KindDat[0]["Material_Kind_Id"];
+               $data_in["Name"] = $busData["material_name"];
+               $data_in["Brand_Id"] = $brandDat[0]["Brand_Id"];
+               $data_in["Ref"] = 1;
+               $result = $this->Material->create($data_in); 
+            }
+      }
+
+
+      //读取flavor中的id
+      $criteria = array();
+      $criteria["and"] = array("Name" => $busData["material_name"]);
+      $flavorDat = $this->Material->read($criteria);
+
+      //更新boxInfo
+      $data_in = array();
+      $data_in['Material_Kind_Id'] = $KindDat[0]["Material_Kind_Id"];
+      $data_in["Material_Id"] = $flavorDat[0]["Material_Id"]; 
+      $criteria["and"] = array("Box_Id" =>  $busData["box_id"]);
+      $box_id = $this->Box->update($data_in, $criteria);
+
+      //返回BoxBean
+      $busData["material_id"] = $flavorDat[0]["Material_Id"];
+      $busData["material_kind_id"] = $KindDat[0]["Material_Kind_Id"];
+
+      $rspInfo = json_encode($busData);
+      $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,$rspInfo);
+      echo $rspInfo;
+
+   }
+
 }

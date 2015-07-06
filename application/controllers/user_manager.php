@@ -112,5 +112,34 @@ class User_manager extends CI_Controller{
 		}
    }
 
+   function logout()
+   {
+   	   	$data = file_get_contents('php://input');
+   		$this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,"$data ");
+		$busData = json_decode($data ,true);
+		//查找该用户名与密码
+		$criteria = array();
+		$criteria["and"] = array("Name" => $busData["name"],"Password" => $busData["password"]);
+		$userDat = $this->User->read($criteria);
+		if (!empty($userDat)) {
+				
+			//更新用户的状态
+			$data_in = array('Status' => 0);
+      		$upd_criteria['and'] = array('User_Id' => $userDat[0]['User_Id']);
+      		$result = $this->User->update($data_in, $upd_criteria);
+	      	if($result !== false)
+	      	{
+				$rspData["userID"] =$userDat[0]["User_Id"];
+				$rspData["state"] = "OK";
+				$rspData["erroInfo"] = "退出成功ID为".$userDat[0]["User_Id"];
+
+				$rspInfo = json_encode($rspData);
+				echo $rspInfo;
+		    }
+
+		}
+
+   }
+
 
 }
