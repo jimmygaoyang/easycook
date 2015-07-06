@@ -287,11 +287,13 @@ class Box_manager extends CI_Controller{
       $criteria["and"] = array("Box_Mac" =>  $busData["box_mac"]);
       $box_id = $this->Box->update($data_in, $criteria);
 
+      echo $this->get_box_info($busData["box_id"]);
+
       //返回brand信息
-      $busData["brand_id"] = $brand_result[0]["Brand_Id"]; 
-      $rspInfo = json_encode($busData);
-      $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,$rspInfo);
-      echo $rspInfo;
+      // $busData["brand_id"] = $brand_result[0]["Brand_Id"]; 
+      // $rspInfo = json_encode($busData);
+      // $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,$rspInfo);
+      // echo $rspInfo;
    }
 
    function update_box_mac()
@@ -397,14 +399,49 @@ class Box_manager extends CI_Controller{
       $criteria["and"] = array("Box_Id" =>  $busData["box_id"]);
       $box_id = $this->Box->update($data_in, $criteria);
 
-      //返回BoxBean
-      $busData["material_id"] = $flavorDat[0]["Material_Id"];
-      $busData["material_kind_id"] = $KindDat[0]["Material_Kind_Id"];
-
-      $rspInfo = json_encode($busData);
-      $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,$rspInfo);
-      echo $rspInfo;
+      echo $this->get_box_info($busData["box_id"]);
 
    }
+
+   function get_box_info($box_id)
+   {
+      $criteria = array();
+      $criteria["and"] = array("Box_Id" => $box_id);
+      $box_result= $this->Box->read($criteria);
+      $box = $box_result[0];
+
+      $BoxBean["box_id"]=$box["Box_Id"];
+      $BoxBean["box_mac"]=$box["Box_Mac"];
+      $BoxBean["material_kind_id"]=$box["Material_Kind_Id"];
+      //读取kind中的种类id
+      $criteria = array();
+      $criteria["and"] = array("Material_Kind_Id" => $box["Material_Kind_Id"]);
+      $KindDat = $this->Material_kind->read($criteria);
+      $BoxBean["material_kind_name"]=$KindDat[0]["Name"];
+
+      $BoxBean["material_id"]=$box["Material_Id"];
+      //读取flavor中的id
+      $criteria = array();
+      $criteria["and"] = array("Material_Id" => $box["Material_Id"]);
+      $flavorDat = $this->Material->read($criteria);
+      $BoxBean["material_name"]=$flavorDat[0]["Name"];
+
+      $BoxBean["brand_id"]=$flavorDat[0]["Brand_Id"];
+      //读取Brand中的品牌
+      $criteria = array();
+      $criteria["and"] = array("Brand_Id" => $BoxBean["brand_id"]);
+      $brandDat = $this->brand->read($criteria);
+      $BoxBean["brand_name"]=$brandDat[0]["Name"];
+      $BoxBean["corpor_name"]=$brandDat[0]["CorporName"];
+      $BoxBean["corpor_tel"]=$brandDat[0]["TelNum"];
+      $BoxBean["corpor_addr"]=$brandDat[0]["Address"];
+      $BoxBean["corpor_url"]=$brandDat[0]["URL"];
+      $BoxBean["sw_ver"]=$box["SW_Ver"];
+
+      $rspInfo = json_encode($BoxBean);
+      $this->logservice->log($this->module_name, "DEBUG","EVENT",$this->IP,$rspInfo);
+      echo $rspInfo;
+   }
+
 
 }
